@@ -8,15 +8,15 @@ async function signup(parent, args, context, info) {
 
     // Hash password with bcrypt
     const password = await bcrypt.hash(args.password, saltRounds);
-
+    
     // Create User
     const user = await context.prisma.user.create({
         data: { ...args, password }
     })
-
+    console.log(user)
     // JWT Creation
     const token = jwt.sign({ userId: user.id }, APP_SECRET)
-
+    console.log(token)
     return {
         token,
         user

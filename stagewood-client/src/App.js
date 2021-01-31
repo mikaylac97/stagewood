@@ -3,7 +3,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import './App.css'
 
 // import Login from './components/Auth/Login'
-// import Signup from './components/Auth/Signup'
+import Signup from './components/Auth/Signup'
 import Landing from './components/Landing'
 import Profile from './components/Profile'
 import ProtectedRoute from './components/ProtectedRoute'
@@ -18,16 +18,16 @@ export default class App extends Component {
   render() {
     return (
       <div>
-        <BrowserRouter>
-          <Switch>
+          <Signup />
+          {/* <Switch>
             <Route exact path='/' render={props => <Landing />}/>
             <ProtectedRoute 
               path='/profile'
               redirect='/error'
               render={props => <Profile />}
             />
-          </Switch>
-        </BrowserRouter>
+          </Switch> */}
+        
       </div>
     )
   }

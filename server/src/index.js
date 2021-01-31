@@ -18,6 +18,8 @@ const server = new ApolloServer({
         path.join(__dirname, 'schema.graphql'),
         'utf8'
     ),
+    introspection: true,
+    playground: true,
     resolvers,
     context: ({ req }) => {
       return {
@@ -32,7 +34,7 @@ const server = new ApolloServer({
 })
 
 server
-    .listen()
+    .listen(process.env.PORT || 5000)
     .then(({ url }) => {
         console.log(`Server is running on ${url}`)
     })
