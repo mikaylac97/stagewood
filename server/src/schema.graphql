@@ -1,0 +1,17 @@
+type Query {
+  info: String!
+  feed: [User!]!
+}
+
+type Mutation {
+  post(first_name: String!, last_name: String!, email: String!, profile_pic: String!, username: String!, password: String!): User!
+}
+
+type User {
+  first_name: String!
+  last_name: String!
+  email: String!
+  profile_pic: String!
+  username: String!
+  password: String!
+}
