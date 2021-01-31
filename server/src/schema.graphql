@@ -1,17 +1,34 @@
 type Query {
-  info: String!
-  feed: [User!]!
+  allUsers(id: String): [User!]!
+  findUser(id: String): User!
 }
 
 type Mutation {
-  post(first_name: String!, last_name: String!, email: String!, profile_pic: String!, username: String!, password: String!): User!
+  signup(
+    first_name: String!,
+    last_name: String!,
+    email: String!,
+    profile_pic: String!,
+    username: String!,
+    password: String!
+  ): AuthPayload
+  login(
+    email: String!, 
+    password: String!
+    ): AuthPayload
 }
 
 type User {
+  id: ID!
   first_name: String!
   last_name: String!
   email: String!
   profile_pic: String!
   username: String!
   password: String!
+}
+
+type AuthPayload {
+  token: String
+  user: User
 }

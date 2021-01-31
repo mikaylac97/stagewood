@@ -3,32 +3,15 @@ const fs = require('fs');
 const path = require('path');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
+const Query = require('./resolvers/Query');
+const Mutation = require('./resolvers/Mutations');
+const { getUserId } = require('./utils');
 
-  
 
   const resolvers = {
-    Query: {
-      info: () => `This is the API of a Hackernews Clone`,
-      feed: () => async (parent, args, context) => {
-          return context.prisma.user.findMany()
-      },
-    },
-    Mutation: {
-        post: (parent, args, context, info) => {
-           const newUser = context.prisma.user.create({
-               data: {
-                first_name: args.first_name,
-                last_name: args.last_name,
-                email: args.email,
-                profile_pic: args.profile_pic,
-                username: args.username,
-                password: args.password
-              }
-           })
-          return newUser
-        }
-  }
-}
+    Query,
+    Mutation
+  };
 
 const server = new ApolloServer({
     typeDefs: fs.readFileSync(
@@ -36,8 +19,15 @@ const server = new ApolloServer({
         'utf8'
     ),
     resolvers,
-    context: {
-        prisma
+    context: ({ req }) => {
+      return {
+        ...req,
+        prisma,
+        userId:
+          req && req.headers.authorization
+            ? getUserId(req)
+            : null
+      };
     }
 })
 
