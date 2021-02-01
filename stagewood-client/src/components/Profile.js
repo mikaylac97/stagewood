@@ -20,7 +20,7 @@ export default function Profile() {
     return (
         <div>
             <div>
-                {data.allUsers.map(user => (
+                {data?.allUsers.map(user => (
                     <>
                        <p>
                        {user.id} {user.username}

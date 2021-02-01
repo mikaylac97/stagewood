@@ -37,12 +37,24 @@
 // }
 
 import React, { Component } from 'react';
+import { Route, Switch, BrowserRouter } from 'react-router-dom';
 import Profile from './Profile';
 import Login from './Auth/Login';
 
 class App extends Component {
   render() {
-    return <Login />;
+    return (
+      <div className="center w85">
+      <BrowserRouter>
+      <div className="ph3 pv1 background-gray">
+        <Switch>
+          <Route exact path="/" component={Profile} />
+          <Route exact path="/login" component={Login} />
+        </Switch>
+      </div>
+      </BrowserRouter>
+    </div>
+    )
   }
 }
 
