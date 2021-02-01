@@ -3,8 +3,12 @@ function allUsers (parent, args, context, info) {
 }
 
 function findUser(parent, args, context, info) {
-    const where = args.id;
-    const user = context.prisma.user.findUnique({ where: {id: context.userId} })
+    const id = +args.id;
+    const user = context.prisma.user.findUnique({
+        where: {
+            id
+        }
+    })
     return user;
 }
 

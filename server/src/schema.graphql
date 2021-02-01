@@ -1,6 +1,6 @@
 type Query {
-  allUsers(id: String): [User!]!
-  findUser(id: String): User!
+  allUsers(id: String!): [User!]!
+  findUser(id: ID!): User!
 }
 
 type Mutation {
