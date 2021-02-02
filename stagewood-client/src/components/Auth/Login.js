@@ -1,4 +1,5 @@
 import { useMutation, gql } from '@apollo/client';
+import Error from '../Error';
 import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import { AUTH_TOKEN } from '../../constants';
@@ -74,7 +75,7 @@ export default function Login(props) {
         }
     })
 
-    const [signup] = useMutation(SIGNUP_MUTATION, {
+    const [signup, { loading, error }] = useMutation(SIGNUP_MUTATION, {
         variables: {
             first_name: formState.first_name,
             last_name: formState.last_name,
@@ -91,6 +92,7 @@ export default function Login(props) {
             }
         }
     })
+
 
   const fileUpload = (event) => {
         event.preventDefault();
@@ -203,7 +205,7 @@ export default function Login(props) {
                         login();
                     } else {
                         event.preventDefault();
-                        signup();
+                        signup().catch(err => console.log(err))
                     }
                 }
                 }
@@ -222,8 +224,13 @@ export default function Login(props) {
                 {formState.login
                 ? 'need to create an account?'
                 : 'already have an account?'}
-            </button>
+
+                
+            </button> 
         </div>
+        <Error error={error}/>
+        {/* {error && <div>Username or email already in use</div>} */}
+        {/* <Error error={error} /> */}
     </div>
     )
 }

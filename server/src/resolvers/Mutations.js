@@ -10,20 +10,35 @@ async function signup(parent, args, context, info) {
         throw new Error('Password should be at least 6 characters.')
     }
 
-    // const usernameExists = await context.prisma.user.findUnique({
-    //     where: {
-    //         username: args.username
-    //     }
-    // })
+    const usernameExists = await context.prisma.user.findUnique({
+        where: {
+                username: args.username
+        }
+    })
+    .then(user => {
+        if(user) {
+            throw new Error('Username is already in use.')
+        }
+    })
 
-    // const emailExists = await context.prisma.user.findUnique({
-    //     where: {
-    //         email: args.email
-    //     }
-    // })
+    const emailExists = await context.prisma.user.findUnique({
+        where: {
+            email: args.email
+        }
+    })
+    .then(user => {
+        if(user) {
+            throw new Error('Email is already in use.')
+        }
+    })
 
-    // if(usernameExists || emailExists){
-    //     throw new Error('That email or username is already taken.')
+
+    // if(usernameExists){
+    //     throw new Error('That username is already in use.')
+    // }
+
+    // if(emailExists){
+    //     throw new Error('That email is already in use.')
     // }
 
     // Hash password with bcrypt
@@ -37,6 +52,9 @@ async function signup(parent, args, context, info) {
     // JWT Creation
     const token = jwt.sign({ userId: user.id }, APP_SECRET)
     // console.log(token)
+    // if(usernameExists) {
+    //     throw new Error('Username is already taken.')
+    // }
     return {
         token,
         user

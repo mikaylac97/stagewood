@@ -64,6 +64,7 @@ function fileUpload(event) {
     return(
         <div>
             <form onSubmit={(event) => {
+                
                 event.preventDefault();
                 signup();
             }}>
