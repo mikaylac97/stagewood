@@ -24,7 +24,7 @@ const SIGNUP_MUTATION = gql`
         ) {
             token
             user {
-                username
+                id
             }
         }
     }
@@ -49,7 +49,7 @@ const LOGIN_MUTATION = gql`
 
 export default function Login(props) {
 
-    console.log(props);
+    // console.log(props);
 
     const history = useHistory();
     const [formState, setFormState] = useState({
@@ -69,7 +69,6 @@ export default function Login(props) {
         },
         onCompleted: ({ login }) => {
             localStorage.setItem(AUTH_TOKEN, login.token);
-            console.log(login.user)
             props.onUserChange(login.user.id)
             history.push(`/profile`);
         }
@@ -85,16 +84,11 @@ export default function Login(props) {
             password: formState.password
         },
         onCompleted: ({ signup }) => {
-            localStorage.setItem(AUTH_TOKEN, signup.token);
-            props.onUserChange({
-                first_name: formState.first_name,
-                last_name: formState.last_name,
-                email: formState.email,
-                profile_pic: formState.profile_pic,
-                username: formState.username,
-                password: formState.password
-            })
-            history.push(`/profile`);
+            if(formState.confirmPassword === formState.password) {
+              localStorage.setItem(AUTH_TOKEN, signup.token);
+              props.onUserChange(signup.user.id)
+              history.push(`/profile`);
+            }
         }
     })
 

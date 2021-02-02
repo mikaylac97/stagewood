@@ -6,6 +6,26 @@ const saltRounds = 10;
 
 async function signup(parent, args, context, info) {
 
+    if(args.password.length <= 5) {
+        throw new Error('Password should be at least 6 characters.')
+    }
+
+    // const usernameExists = await context.prisma.user.findUnique({
+    //     where: {
+    //         username: args.username
+    //     }
+    // })
+
+    // const emailExists = await context.prisma.user.findUnique({
+    //     where: {
+    //         email: args.email
+    //     }
+    // })
+
+    // if(usernameExists || emailExists){
+    //     throw new Error('That email or username is already taken.')
+    // }
+
     // Hash password with bcrypt
     const password = await bcrypt.hash(args.password, saltRounds);
     
@@ -16,7 +36,7 @@ async function signup(parent, args, context, info) {
     console.log(user)
     // JWT Creation
     const token = jwt.sign({ userId: user.id }, APP_SECRET)
-    console.log(token)
+    // console.log(token)
     return {
         token,
         user
