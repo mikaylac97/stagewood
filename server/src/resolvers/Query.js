@@ -4,6 +4,7 @@ function allUsers (parent, args, context, info) {
 
 function findUser(parent, args, context, info) {
     const id = +args.id;
+    // const email = args.email
     const user = context.prisma.user.findUnique({
         where: {
             id

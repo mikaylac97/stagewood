@@ -23,6 +23,9 @@ const SIGNUP_MUTATION = gql`
             password: $password
         ) {
             token
+            user {
+                username
+            }
         }
     }
 `
@@ -37,28 +40,38 @@ const LOGIN_MUTATION = gql`
             password: $password
         ) {
             token
+            user {
+                id
+            }
         }
     }
 `
 
-export default function Login() {
+export default function Login(props) {
+
+    console.log(props);
 
     const history = useHistory();
     const [formState, setFormState] = useState({
         login: true,
         email: '',
         password: '',
-        confirmPassword: ''
+        confirmPassword: '',
+        username: '',
+        isLoggedIn: false
     });
 
     const [login] = useMutation(LOGIN_MUTATION, {
         variables: {
             email: formState.email,
+            username: formState.username,
             password: formState.password
         },
         onCompleted: ({ login }) => {
             localStorage.setItem(AUTH_TOKEN, login.token);
-            history.push('/');
+            console.log(login.user)
+            props.onUserChange(login.user.id)
+            history.push(`/profile`);
         }
     })
 
@@ -73,7 +86,15 @@ export default function Login() {
         },
         onCompleted: ({ signup }) => {
             localStorage.setItem(AUTH_TOKEN, signup.token);
-            history.push('/');
+            props.onUserChange({
+                first_name: formState.first_name,
+                last_name: formState.last_name,
+                email: formState.email,
+                profile_pic: formState.profile_pic,
+                username: formState.username,
+                password: formState.password
+            })
+            history.push(`/profile`);
         }
     })
 
@@ -165,7 +186,8 @@ export default function Login() {
           type="password"
           placeholder="Choose a safe password"
         />
-          <input
+         {!formState.login &&
+            <input
           value={formState.confirmPassword}
           onChange={(e) =>
             setFormState({
@@ -175,8 +197,8 @@ export default function Login() {
           }
           type="password"
           placeholder="Confirm password"
-        />
-        {formState.password !== formState.confirmPassword && <div style={{ color: 'red' }}>Passwords must match</div>}  
+        />}
+        {!formState.login && formState.password !== formState.confirmPassword && <div style={{ color: 'red' }}>Passwords must match</div>}  
       </div>
         <div className="flex mt3">
             <button

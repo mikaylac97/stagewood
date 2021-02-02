@@ -36,26 +36,44 @@
 //   )
 // }
 
-import React, { Component } from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import { Route, Switch, BrowserRouter } from 'react-router-dom';
+import { useQuery, gql, graphql } from '@apollo/client';
 import Profile from './Profile';
 import Login from './Auth/Login';
 
-class App extends Component {
-  render() {
+
+
+function App(props) {
+
+  const [userState, setUserState] = useState({
+    currentUserId: []
+  })
+
+  function updateUser (userId) {
+    setUserState({ currentUserId: userId })
+}
+  
+  // console.log(props);
+  
     return (
       <div className="center w85">
       <BrowserRouter>
       <div className="ph3 pv1 background-gray">
         <Switch>
-          <Route exact path="/" component={Profile} />
-          <Route exact path="/login" component={Login} />
+          <Route exact path="/"
+            render={(props) => <Login userId={userState.currentUserId} onUserChange={(user) => updateUser(user)} {...props} /> } 
+          />
+          <Route exact path="/profile"
+            render={(props) => <Profile userId={userState.currentUserId} onUserChange={() => updateUser()} {...props} />}
+           />
         </Switch>
       </div>
       </BrowserRouter>
     </div>
     )
-  }
+  
 }
 
 export default App;
+
