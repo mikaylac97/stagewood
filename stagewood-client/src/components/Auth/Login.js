@@ -114,10 +114,32 @@ export default function Login(props) {
 
     return (
         <div>
-      <h4 className="mv3">
-        {formState.login ? 'Login' : 'Sign Up'}
-      </h4>
-      <div className="flex flex-column">
+      <h2>
+        Stagewood Consortium Coding Challenge: Sign in/Sign up Form
+      </h2>
+      <div className="container container-styles" id="container">
+      <div class="form-container sign-in-container">
+      <form onSubmit={
+         (event) => {
+                    if(formState.login) {
+                        event.preventDefault();
+                        login().catch(err => console.log(err))
+                    } else {
+                        event.preventDefault();
+                        signup().catch(err => console.log(err))
+                    }
+                }
+                }
+      >
+        <h1>{formState.login ? 'Sign in' : 'Sign up'}</h1>
+        <span
+          onClick={(e) =>
+                setFormState({
+                    ...formState,
+                    login: !formState.login
+                })
+                }>
+          {formState.login ? 'or create a new account' : 'or sign in to your account'}</span>
         {!formState.login && (
             <>
             <input
@@ -195,40 +217,29 @@ export default function Login(props) {
           placeholder="Confirm password"
         />}
         {!formState.login && formState.password !== formState.confirmPassword && <div style={{ color: 'red' }}>Passwords must match</div>}  
-      </div>
         <div className="flex mt3">
             <button
+              type='submit'
                 className="pointer mr2 button"
-                onClick={ (event) => {
-                    if(formState.login) {
-                        event.preventDefault();
-                        login().catch(err => console.log(err))
-                    } else {
-                        event.preventDefault();
-                        signup().catch(err => console.log(err))
-                    }
-                }
-                }
             >
                 {formState.login ? 'login' : 'create account'}
             </button>
-            <button
-                className="pointer button"
-                onClick={(e) =>
-                setFormState({
-                    ...formState,
-                    login: !formState.login
-                })
-                }
-            >
-                {formState.login
-                ? 'need to create an account?'
-                : 'already have an account?'}
-
-                
-            </button> 
+            </div>
+            <Error error={signupError || loginError}/>
+            </form>
         </div>
-        <Error error={signupError || loginError}/>
+        
+      <div class="overlay-container">
+        <div class="overlay">
+          <div class="overlay-panel overlay-right">
+            <h1>Welcome back!</h1>
+            <p>This sign up form was done in part of the technical assessment administered by Stagewood Consortium Inc.</p>
+            <p>Technologies used: ReactJS, GraphQL, Prisma 2, and mySQL.</p>
+          </div>
+        </div>
+      </div>
+      </div>
+        
     </div>
     )
 }

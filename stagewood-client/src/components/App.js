@@ -41,6 +41,7 @@ import { Route, Switch, BrowserRouter } from 'react-router-dom';
 import { useQuery, gql, graphql } from '@apollo/client';
 import Profile from './Profile';
 import Login from './Auth/Login';
+import Footer from './Footer';
 
 
 
@@ -68,6 +69,7 @@ function App(props) {
             render={(props) => <Profile userId={userState.currentUserId} onUserChange={() => updateUser()} {...props} />}
            />
         </Switch>
+        <Footer />
       </div>
       </BrowserRouter>
     </div>

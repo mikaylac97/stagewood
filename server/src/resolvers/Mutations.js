@@ -6,6 +6,10 @@ const saltRounds = 10;
 
 async function signup(parent, args, context, info) {
 
+    if(!args.email.includes('@') || !args.email.includes('.')) {
+        throw new Error('Please enter a valid email address.')
+    }
+
     // Ensures secure password
     if(args.password.length <= 5) {
         throw new Error('Password should be at least 6 characters.')
@@ -44,7 +48,7 @@ async function signup(parent, args, context, info) {
   
     // JWT Creation
     const token = jwt.sign({ userId: user.id }, APP_SECRET)
-  
+    
     return {
         token,
         user
@@ -59,21 +63,21 @@ async function login(parent, args, context, info) {
             where: { 
                 email: args.email 
             }
-        }).then(emailExists => {
-            if(emailExists) {
-                throw new Error('No user found with that email')
-            }
         })
     // if(!user) {
     //     throw new Error('No user found with that email')
     // }
     // Handles invalid password
+    if (!user) {
+        throw new Error('No user found with that email.')
+    }
+
     const valid = await bcrypt.compare(args.password, user.password).then(isSame => {
         if(!isSame){
             throw new Error('Invalid password')
-        }
+        } 
     })
-
+    
     // if(!valid) {
     //     throw new Error('Invalid password')
     // }

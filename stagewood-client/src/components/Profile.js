@@ -36,16 +36,25 @@ const logout = (event) => {
     props.history.push('/');
 }
 
+
 console.log(data)
 
 if (loading) return('Loading...')
 if (error) return ('Error!', error.message)
-console.log(data)
     return (
-        <div>
-            First Name: {data?.findUser?.first_name}
-            Last Name: {data?.findUser?.last_name}
-            <button onClick={event => logout(event)}>Logout</button>
-        </div>
+        <>
+            <h2>Welcome back, {data?.findUser?.username}</h2>
+            <div class="container-styles" id="container">
+                <div className='user-info'>
+                    <img src={data?.findUser?.profile_pic} className='user-avi' alt='user_avi' />
+                    <p>Name: {data?.findUser.first_name} {data?.findUser.last_name}</p>
+                    <p>Username: {data?.findUser?.username}</p>
+                    <p>Email: {data?.findUser?.email}</p>
+                    <button onClick={event => logout(event)}>Logout</button>
+                </div>
+                
+            </div>
+        </>
+        
     )
 }

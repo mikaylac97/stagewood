@@ -10,7 +10,7 @@ export default function Error({ error }) {
     return error.networkError.result.errors.map((error, i) => (
       <div key={i}>
         <p>
-          {error.message.replace('GraphQL error: ', '')}
+            {error.message.replace('GraphQL error: ', '')}
         </p>
       </div>
     ))
