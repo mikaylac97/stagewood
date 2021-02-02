@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { AUTH_TOKEN } from '../../constants'
+// import { AUTH_TOKEN } from '../../constants'
 import { useMutation, gql } from '@apollo/client';
 
 const CREATE_NEW_USER = gql`
@@ -64,7 +64,7 @@ function fileUpload(event) {
     return(
         <div>
             <form onSubmit={(event) => {
-                
+
                 event.preventDefault();
                 signup();
             }}>

@@ -6,10 +6,12 @@ const saltRounds = 10;
 
 async function signup(parent, args, context, info) {
 
+    // Ensures secure password
     if(args.password.length <= 5) {
         throw new Error('Password should be at least 6 characters.')
     }
 
+    // Handle unique email and username creation
     const usernameExists = await context.prisma.user.findUnique({
         where: {
                 username: args.username
@@ -32,15 +34,6 @@ async function signup(parent, args, context, info) {
         }
     })
 
-
-    // if(usernameExists){
-    //     throw new Error('That username is already in use.')
-    // }
-
-    // if(emailExists){
-    //     throw new Error('That email is already in use.')
-    // }
-
     // Hash password with bcrypt
     const password = await bcrypt.hash(args.password, saltRounds);
     
@@ -48,13 +41,10 @@ async function signup(parent, args, context, info) {
     const user = await context.prisma.user.create({
         data: { ...args, password }
     })
-    console.log(user)
+  
     // JWT Creation
     const token = jwt.sign({ userId: user.id }, APP_SECRET)
-    // console.log(token)
-    // if(usernameExists) {
-    //     throw new Error('Username is already taken.')
-    // }
+  
     return {
         token,
         user
@@ -63,15 +53,30 @@ async function signup(parent, args, context, info) {
 
 async function login(parent, args, context, info) {
 
-    const user = await context.prisma.user.findUnique({ where: { email: args.email }});
-    if(!user) {
-        throw new Error('No user found with that email')
-    }
+    // Handles invalid email
+    const user = await context.prisma.user.findUnique(
+        { 
+            where: { 
+                email: args.email 
+            }
+        }).then(emailExists => {
+            if(emailExists) {
+                throw new Error('No user found with that email')
+            }
+        })
+    // if(!user) {
+    //     throw new Error('No user found with that email')
+    // }
+    // Handles invalid password
+    const valid = await bcrypt.compare(args.password, user.password).then(isSame => {
+        if(!isSame){
+            throw new Error('Invalid password')
+        }
+    })
 
-    const valid = await bcrypt.compare(args.password, user.password);
-    if(!valid) {
-        throw new Error('Invalid password')
-    }
+    // if(!valid) {
+    //     throw new Error('Invalid password')
+    // }
 
     const token = jwt.sign({ userId: user.id }, APP_SECRET)
 

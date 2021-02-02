@@ -62,7 +62,7 @@ export default function Login(props) {
         isLoggedIn: false
     });
 
-    const [login] = useMutation(LOGIN_MUTATION, {
+    const [login, { error: loginError }] = useMutation(LOGIN_MUTATION, {
         variables: {
             email: formState.email,
             username: formState.username,
@@ -75,7 +75,7 @@ export default function Login(props) {
         }
     })
 
-    const [signup, { loading, error }] = useMutation(SIGNUP_MUTATION, {
+    const [signup, { error: signupError }] = useMutation(SIGNUP_MUTATION, {
         variables: {
             first_name: formState.first_name,
             last_name: formState.last_name,
@@ -202,7 +202,7 @@ export default function Login(props) {
                 onClick={ (event) => {
                     if(formState.login) {
                         event.preventDefault();
-                        login();
+                        login().catch(err => console.log(err))
                     } else {
                         event.preventDefault();
                         signup().catch(err => console.log(err))
@@ -228,9 +228,7 @@ export default function Login(props) {
                 
             </button> 
         </div>
-        <Error error={error}/>
-        {/* {error && <div>Username or email already in use</div>} */}
-        {/* <Error error={error} /> */}
+        <Error error={signupError || loginError}/>
     </div>
     )
 }
