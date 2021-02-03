@@ -113,11 +113,9 @@ export default function Login(props) {
     }
 
     return (
-        <div>
-      <h2>
-        Stagewood Consortium Coding Challenge: Sign in/Sign up Form
-      </h2>
-      <div className="container container-styles" id="container">
+      <div className='site-container'>
+      <div className="container" id="container">
+      
       <div class="form-container sign-in-container">
       <form onSubmit={
          (event) => {

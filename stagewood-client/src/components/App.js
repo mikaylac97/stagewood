@@ -58,9 +58,9 @@ function App(props) {
   // console.log(props);
   
     return (
-      <div className="center w85">
+      <div >
       <BrowserRouter>
-      <div className="ph3 pv1 background-gray">
+      <div>
         <Switch>
           <Route exact path="/"
             render={(props) => <Login userId={userState.currentUserId} onUserChange={(user) => updateUser(user)} {...props} /> } 
