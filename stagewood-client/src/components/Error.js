@@ -1,5 +1,7 @@
 import React from 'react'
 
+// Error rendering needs to be worked on
+
 export default function Error({ error }) {
     if (!error || !error.message) return null
   if (
