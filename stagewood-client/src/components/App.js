@@ -39,6 +39,7 @@
 import React, { Component, useState, useEffect } from 'react';
 import { Route, Switch, BrowserRouter } from 'react-router-dom';
 import { useQuery, gql, graphql } from '@apollo/client';
+import ProtectedRoute from './ProtectedRoute/index';
 import Profile from './Profile';
 import Login from './Auth/Login';
 import Footer from './Footer';
@@ -62,10 +63,12 @@ function App(props) {
       <BrowserRouter>
       <div>
         <Switch>
-          <Route exact path="/"
+          <Route 
+            path="/"
             render={(props) => <Login userId={userState.currentUserId} onUserChange={(user) => updateUser(user)} {...props} /> } 
           />
-          <Route exact path="/profile"
+          <Route 
+            path="/profile"
             render={(props) => <Profile userId={userState.currentUserId} onUserChange={() => updateUser()} {...props} />}
            />
         </Switch>
