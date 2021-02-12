@@ -56,7 +56,7 @@ function App(props) {
     setUserState({ currentUserId: userId })
 }
   
-  // console.log(props);
+  // add protected route
   
     return (
       <div >
